@@ -41,6 +41,30 @@ def parse_time(s):
 
     return result.replace(tzinfo=utc)
 
+def _extract_prop_option(line):
+    """
+    Extract the (key,value)-tuple from a string like:
+    >>> "option foobar 123"
+    :param line:
+    :return: tuple (key, value)
+    """
+    line = line[7:]
+    pos = line.find(' ')
+    return line[:pos], line[pos + 1:]
+
+
+def _extract_prop_set(line):
+    """
+    Extract the (key, value)-tuple from a string like:
+    >>> 'set foo = "bar"'
+    :param line:
+    :return: tuple (key, value)
+    """
+    token = ' = "'
+    line = line[4:]
+    pos = line.find(token)
+    return line[:pos], line[pos + 4:-1]
+
 def _extract_prop_general(line):
     """
     Extract the (key, value)-tuple from a "standard" property line like:
