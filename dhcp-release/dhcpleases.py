@@ -270,8 +270,19 @@ class Dhcp(object):
                     leases['%s-%s' % (lease.type, lease.host_identifier_string)] = lease
         return leases
 
+    def get_arp(self):
+        """
+        Parse the unique arptable
+        """
+        all_leases = self.get()
+        leases = {}
+        for lease in all_leases:
+            if lease.ethernet not in leases:
+                leases[lease.ethernet] = lease.ip
+        return leases
 
 aa = Dhcp("/var/lib/dhcp/dhcpd.leases")
 #print(aa.get())
 aa.get()
 print(aa.get_current())
+print(aa.get_arp(),type(aa.get_arp()))
