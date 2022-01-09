@@ -1,0 +1,25 @@
+system-view                                                                                          
+# Set account password
+{# % for n in name %#}
+local-user {{name}}
+{# % endfor %#}
+
+authorization-attribute user-role network-admin
+service-type ssh terminal https
+passwrod-control aging 90
+passwrod-control length 6
+passwrod-control simple {{password}}
+quit
+
+display local-user
+# Start the required services
+telnet server enable
+ip http enable
+ip https enable
+public-key local create rsa 
+ssh server enable
+# Set authentication method
+line vty 0 4 
+authentication-mode schema
+quit
+save
